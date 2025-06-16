@@ -10,7 +10,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
-    password_hash = db.Column(db.Text, nullable=False)
+    password_hash = db.Column(db.Text, nullable=False,unique=True)
     role = db.Column(db.String(10), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -20,7 +20,15 @@ class User(db.Model):
     client_cases = db.relationship("Case", back_populates="client", foreign_keys="Case.client_id", cascade="all, delete")
     uploaded_documents = db.relationship("Document", back_populates="uploader", cascade="all, delete")
     comments = db.relationship("Comment", back_populates="user", cascade="all, delete")
-
+    
+    def to_dict(self, include_profile=False):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "role": self.role,
+            "created_at": self.created_at.isoformat()
+            }
 
 class UserProfile(db.Model):
     __tablename__ = "user_profiles"
@@ -34,6 +42,17 @@ class UserProfile(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.relationship("User", back_populates="profile")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "full_name": self.full_name,
+            "phone_number": self.phone_number,
+            "address": self.address,
+            "profile_picture_url": self.profile_picture_url,
+            "created_at": self.created_at.isoformat()
+        }
 
 
 class Case(db.Model):
@@ -78,3 +97,12 @@ class Comment(db.Model):
 
     user = db.relationship("User", back_populates="comments")
     case = db.relationship("Case", back_populates="comments")
+
+class TokenBlocklist(db.Model):
+    __tablename__ = "token_blocklist"
+
+    id = db.Column(db.Integer, primary_key=True)
+    jti = db.Column(db.String(36), nullable=False, unique=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    
