@@ -48,12 +48,12 @@ def test_email():
 from views import *
 
 app.register_blueprint(auth_bp)
-#app.register_blueprint(client_bp)
-#app.register_blueprint(lawyer_bp)
+app.register_blueprint(client_bp)
+app.register_blueprint(lawyer_bp)
 app.register_blueprint(admin_bp)
-#app.register_blueprint(document_bp)
-#app.register_blueprint(comment_bp)
-#app.register_blueprint(profile_bp)
+app.register_blueprint(document_bp)
+app.register_blueprint(comment_bp)
+app.register_blueprint(profile_bp)
 
 @jwt.token_in_blocklist_loader
 def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:

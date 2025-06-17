@@ -45,9 +45,9 @@ def register():
         if mail:
             mail.send(msg)
         else:
-            print("Mail extension not found. Email not sent.")
+            print("Email not sent.")
 
-        return jsonify(message="User registered successfully and email sent"), 201
+        return jsonify(message="User registered successfully "), 201
 
     except Exception as e:
         db.session.rollback()
