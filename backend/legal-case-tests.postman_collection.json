@@ -1,0 +1,701 @@
+{
+	"info": {
+		"_postman_id": "3fefa52f-b100-4371-b7c7-9ab7844f1513",
+		"name": "legal case management system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45814365"
+	},
+	"item": [
+		{
+			"name": "auth requests",
+			"item": [
+				{
+					"name": "register user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"ndinguri\",\r\n    \"role\":\"client\",\r\n    \"email\":\"zacharia.ndinguri@student.moringaschool.com\",\r\n    \"password\":\"ndinguri@09\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/register",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n    \"email\":\"zacthuku@gmail.com\",\r\n    \"password\":\"zacthuku@09\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logged in users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MDA3Mzc2MSwianRpIjoiNzYyYWFmMWQtOGI4Ny00MDczLWJkYzQtMmMwYTc3MmQ1NzJiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6IkFkbWluIn0sIm5iZiI6MTc1MDA3Mzc2MSwiY3NyZiI6IjcwYTRmZGU4LTljNjktNGZjZi1iOTM4LWNhMWFkZDg4NzY3NyIsImV4cCI6MTc1MDE2MDE2MX0.JjEu0g_cfm1KPrHxwSdJHbqcP9OSBXlxUJD9s11QfM0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"cate\",\r\n    \"role\":\"client\",\r\n    \"email\":\"zacharia.ndinguri@student.moringaschool.com\",\r\n    \"password\":\"cate@2\"\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/current_user",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"current_user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MDA3Mzc2MSwianRpIjoiNzYyYWFmMWQtOGI4Ny00MDczLWJkYzQtMmMwYTc3MmQ1NzJiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6IkFkbWluIn0sIm5iZiI6MTc1MDA3Mzc2MSwiY3NyZiI6IjcwYTRmZGU4LTljNjktNGZjZi1iOTM4LWNhMWFkZDg4NzY3NyIsImV4cCI6MTc1MDE2MDE2MX0.JjEu0g_cfm1KPrHxwSdJHbqcP9OSBXlxUJD9s11QfM0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"cate\",\r\n    \"role\":\"client\",\r\n    \"email\":\"zacharia.ndinguri@student.moringaschool.com\",\r\n    \"password\":\"cate@2\"\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/logout",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin requests",
+			"item": [
+				{
+					"name": "get all users",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MDIzOTc2OSwianRpIjoiZTgwNTA3YjctNjRjNi00ZWI0LThhODgtZTQwMzZlYmM2ZGE5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6ImFkbWluIn0sIm5iZiI6MTc1MDIzOTc2OSwiY3NyZiI6IjhlMGFmMjRkLTdlZDQtNDNhOC05YmI3LTU0ZWM4OWZjOWRkMiIsImV4cCI6MTc1MDI0Njk2OX0.87zYXymrPZNfmRsE0rVIT1QC-Sw9SDIMuVhBozZQg5Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"cate\",\r\n    \"role\":\"client\",\r\n    \"email\":\"zacharia.ndinguri@student.moringaschool.com\",\r\n    \"password\":\"cate@2\"\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/admin/users",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MDI0MDQxNSwianRpIjoiNjZmNzk1MDEtMDk1NC00YWY2LWFmNTktZTNlMjYxZThmZTkzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6ImFkbWluIn0sIm5iZiI6MTc1MDI0MDQxNSwiY3NyZiI6ImNlYTIyMjhlLTczODctNGNmYy05MmUyLWZmNGEzOWQwZWFhZCIsImV4cCI6MTc1MDI0NzYxNX0.E2Ag77O9zfK_QqextadGJRLesASp5GrOGpnxCpUW39o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"cate\",\r\n    \"role\":\"client\",\r\n    \"email\":\"zacharia.ndinguri@student.moringaschool.com\",\r\n    \"password\":\"cate@2\"\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/admin/users/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"admin",
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post cases",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MDI0MDQxNSwianRpIjoiNjZmNzk1MDEtMDk1NC00YWY2LWFmNTktZTNlMjYxZThmZTkzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6ImFkbWluIn0sIm5iZiI6MTc1MDI0MDQxNSwiY3NyZiI6ImNlYTIyMjhlLTczODctNGNmYy05MmUyLWZmNGEzOWQwZWFhZCIsImV4cCI6MTc1MDI0NzYxNX0.E2Ag77O9zfK_QqextadGJRLesASp5GrOGpnxCpUW39o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n    \"title\":\"patent\",\r\n    \"description\":\"apply for a product patent\",\r\n    \"lawyer_id\":\"2\",\r\n    \"client_id\":\"3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/admin/cases",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"admin",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get case by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MDI0MDQxNSwianRpIjoiNjZmNzk1MDEtMDk1NC00YWY2LWFmNTktZTNlMjYxZThmZTkzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6ImFkbWluIn0sIm5iZiI6MTc1MDI0MDQxNSwiY3NyZiI6ImNlYTIyMjhlLTczODctNGNmYy05MmUyLWZmNGEzOWQwZWFhZCIsImV4cCI6MTc1MDI0NzYxNX0.E2Ag77O9zfK_QqextadGJRLesASp5GrOGpnxCpUW39o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"cate\",\r\n    \"role\":\"client\",\r\n    \"email\":\"zacharia.ndinguri@student.moringaschool.com\",\r\n    \"password\":\"cate@2\"\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/admin/cases/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"admin",
+								"cases",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"\r",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "client requests",
+			"item": [
+				{
+					"name": "all cases",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MDI0MTY4NywianRpIjoiZWUxY2FiMTQtNmRkOS00ZmIxLWEzYmUtZTM1NTgzNmUzMGI3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6Mywicm9sZSI6ImNsaWVudCJ9LCJuYmYiOjE3NTAyNDE2ODcsImNzcmYiOiJkODIxN2VlNS0zZWE0LTRjZDMtOTVmOS0yMjczYWM0YzI3NGEiLCJleHAiOjE3NTAyNDg4ODd9.i5YWR_Zswt89zXWcabWlRrLMy_jBblC--g2ZrsO-2NE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/client/cases",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"client",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "case by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MDI0MTY4NywianRpIjoiZWUxY2FiMTQtNmRkOS00ZmIxLWEzYmUtZTM1NTgzNmUzMGI3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6Mywicm9sZSI6ImNsaWVudCJ9LCJuYmYiOjE3NTAyNDE2ODcsImNzcmYiOiJkODIxN2VlNS0zZWE0LTRjZDMtOTVmOS0yMjczYWM0YzI3NGEiLCJleHAiOjE3NTAyNDg4ODd9.i5YWR_Zswt89zXWcabWlRrLMy_jBblC--g2ZrsO-2NE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/client/case/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"client",
+								"case",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "comments",
+			"item": [
+				{
+					"name": "add comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MDI0MjM1NCwianRpIjoiN2NkNzc5ZGYtMTMyYS00M2JlLWExOWEtNTc2YWU1ZDA3ODkxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6Mywicm9sZSI6ImNsaWVudCJ9LCJuYmYiOjE3NTAyNDIzNTQsImNzcmYiOiI2YmIyMGM1ZS1hZjliLTQ5Y2ItYjc4YS1jZTI4YTY5YTk3NGUiLCJleHAiOjE3NTAyNDk1NTR9.BT-cVeOKbTjpRSNXhHt_BOVOp_HbC_Vp7zZjRdVBa9Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"case_id\":\"1\",\r\n    \"user_id\":\"3\",\r\n    \"content\":\"i need the pantent filed as early as possible\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/cases/1/comments",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cases",
+								"1",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get comment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MDI0MjM1NCwianRpIjoiN2NkNzc5ZGYtMTMyYS00M2JlLWExOWEtNTc2YWU1ZDA3ODkxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6Mywicm9sZSI6ImNsaWVudCJ9LCJuYmYiOjE3NTAyNDIzNTQsImNzcmYiOiI2YmIyMGM1ZS1hZjliLTQ5Y2ItYjc4YS1jZTI4YTY5YTk3NGUiLCJleHAiOjE3NTAyNDk1NTR9.BT-cVeOKbTjpRSNXhHt_BOVOp_HbC_Vp7zZjRdVBa9Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"case_id\":\"1\",\r\n    \"user_id\":\"3\",\r\n    \"content\":\"i need the pantent filed as early as possible\"\r\n\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/cases/1/comments",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cases",
+								"1",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "lawyers",
+			"item": [
+				{
+					"name": "all cases",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "status update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\":\"closed\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/lawyer/case/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"lawyer",
+								"case",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get comments",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "no of cases",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MDI0MzIzOCwianRpIjoiNjU1ZWFmNzAtZDUzNC00NjQwLTk3NzItNTI4YzIyNTliODNkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6Miwicm9sZSI6Imxhd3llciJ9LCJuYmYiOjE3NTAyNDMyMzgsImNzcmYiOiIwN2EyOTYxYi0wZWQ4LTRkM2UtYjdiNS05MWYwOWUxM2RiMmYiLCJleHAiOjE3NTAyNTA0Mzh9.n4haTcIWfmAhS6aA1-r3Fq1djBlRjxgscKmpP_uz8Rw",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "profile",
+			"item": [
+				{
+					"name": "user profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/profile",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\":\"zacharia thuku\",\r\n    \"phone_number\":\"0718719052\",\r\n    \"address\":\"00100, Nairobi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/profile",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc1MDI0MzIzOCwianRpIjoiNjU1ZWFmNzAtZDUzNC00NjQwLTk3NzItNTI4YzIyNTliODNkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6Miwicm9sZSI6Imxhd3llciJ9LCJuYmYiOjE3NTAyNDMyMzgsImNzcmYiOiIwN2EyOTYxYi0wZWQ4LTRkM2UtYjdiNS05MWYwOWUxM2RiMmYiLCJleHAiOjE3NTAyNTA0Mzh9.n4haTcIWfmAhS6aA1-r3Fq1djBlRjxgscKmpP_uz8Rw",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
