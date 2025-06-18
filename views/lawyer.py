@@ -9,7 +9,7 @@ lawyer_bp = Blueprint('lawyer', __name__)
 @jwt_required()
 def get_lawyer_cases():
     user = get_jwt_identity()
-    if user['role'] != 'Lawyer':
+    if user['role'].lower() != 'lawyer':
         return jsonify(error="Unauthorized"), 403
     cases = Case.query.filter_by(lawyer_id=user['id']).all()
     return jsonify([case.to_dict() for case in cases])
@@ -49,7 +49,7 @@ def get_case_comments(id):
 @jwt_required()
 def get_assigned_cases_count():
     user = get_jwt_identity()
-    if user['role'] != 'Lawyer':
+    if user['role'].lower() != 'lawyer':
         return jsonify(error="Unauthorized"), 403
     count = Case.query.filter_by(lawyer_id=user['id']).count()
     return jsonify(count=count)

@@ -9,10 +9,13 @@ client_bp = Blueprint('client', __name__)
 @jwt_required()
 def get_client_cases():
     user = get_jwt_identity()
-    if user['role'] != 'Client':
+    
+    if user['role'].lower() != 'client':
         return jsonify(error="Unauthorized"), 403
+
     cases = Case.query.filter_by(client_id=user['id']).all()
-    return jsonify([case.to_dict() for case in cases])
+    return jsonify([case.to_dict() for case in cases]), 200
+
 
 @client_bp.route('/client/case/<int:id>', methods=['GET'])
 @jwt_required()

@@ -96,7 +96,17 @@ class Document(db.Model):
 
     uploader = db.relationship("User", back_populates="uploaded_documents")
     case = db.relationship("Case", back_populates="documents")
-
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "filename": self.filename,
+            "file_url": self.file_url,
+            "uploaded_by": self.uploaded_by,
+            "case_id": self.case_id,
+            "upload_date": self.upload_date.isoformat()
+            
+        }
 
 class Comment(db.Model):
     __tablename__ = "comments"
@@ -109,6 +119,16 @@ class Comment(db.Model):
 
     user = db.relationship("User", back_populates="comments")
     case = db.relationship("Case", back_populates="comments")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "content": self.content,
+            "case_id": self.case_id,
+            "user_id": self.user_id,
+            "created_at": self.created_at.isoformat(),
+            "user": self.user.to_dict() if self.user else None
+        }
 
 class TokenBlocklist(db.Model):
     __tablename__ = "token_blocklist"
