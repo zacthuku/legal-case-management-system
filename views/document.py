@@ -19,7 +19,9 @@ def upload_doc(case_id):
         doc = Document(case_id=case_id, uploader_id=user['id'], filename=filename)
         db.session.add(doc)
         db.session.commit()
-        return jsonify(doc.to_dict()), 201
+        return jsonify(doc.to_dict()), 201 
+        # return a success response with the document details
+
     return jsonify(error="No file uploaded"), 400
 
 @document_bp.route('/documents/<filename>', methods=['GET'])

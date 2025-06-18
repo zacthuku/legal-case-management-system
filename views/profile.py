@@ -13,7 +13,7 @@ def get_profile():
 
     if user and user.profile:
         return jsonify(user.profile.to_dict())
-    return jsonify(message="Profile not found"), 404
+    return jsonify(error="Profile not found"), 404
 
 # Update current user's profile
 @profile_bp.route('/profile', methods=['PUT'])
@@ -24,7 +24,7 @@ def update_profile():
     data = request.get_json()
 
     if not user:
-        return jsonify(message="User not found"), 404
+        return jsonify(error="User not found"), 404
 
     # Create profile if it doesn't exist yet
     if not user.profile:
@@ -38,4 +38,4 @@ def update_profile():
     profile.profile_picture_url = data.get('profile_picture_url', profile.profile_picture_url)
 
     db.session.commit()
-    return jsonify(message="Profile updated", profile=profile.to_dict())
+    return jsonify(success="Profile updated", profile=profile.to_dict())

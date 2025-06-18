@@ -10,7 +10,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
-    password_hash = db.Column(db.Text, nullable=False,unique=True)
+    password_hash = db.Column(db.Text, nullable=False)
     role = db.Column(db.String(10), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -70,7 +70,19 @@ class Case(db.Model):
     client = db.relationship("User", foreign_keys=[client_id], back_populates="client_cases")
     documents = db.relationship("Document", back_populates="case", cascade="all, delete")
     comments = db.relationship("Comment", back_populates="case", cascade="all, delete")
-
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "status": self.status,
+            "lawyer_id": self.lawyer_id,
+            "client_id": self.client_id,
+            "created_at": self.created_at.isoformat(),
+            "lawyer": self.lawyer.to_dict() if self.lawyer else None,
+            "client": self.client.to_dict() if self.client else None
+        }
 
 class Document(db.Model):
     __tablename__ = "documents"

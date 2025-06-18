@@ -24,7 +24,7 @@ def update_case(id):
     data = request.get_json()
     case.status = data.get("status", case.status)
     db.session.commit()
-    return jsonify(case.to_dict())
+    return jsonify({"success":"case updated successfully"}, case.to_dict())
 @lawyer_bp.route('/lawyer/case/<int:id>', methods=['GET'])
 @jwt_required()
 def get_case_detail(id):

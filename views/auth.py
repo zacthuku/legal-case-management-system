@@ -6,7 +6,8 @@ from flask_mail import Message
 from flask_mail import Mail
 from datetime import datetime, timezone
 from models import TokenBlocklist
-
+from email_validator import validate_email, EmailNotValidError
+import re
 auth_bp = Blueprint('auth', __name__)
 
 # Assume `mail` is initialized in app.py and accessible via current_app
@@ -19,15 +20,27 @@ def register():
         if field not in data:
             return jsonify(error=f"Missing field: {field}"), 400
 
+    try:
+        validate_email(data['email'])
+    except EmailNotValidError as e:
+        return jsonify({"error": str(e)}), 400
+    password = data['password']
+    if len(password) < 8 or not re.search(r'[A-Za-z]', password) or not re.search(r'\d', password):
+        return jsonify({"error": "Password must be at least 8 characters long and contain both letters and numbers."}), 400
+    role = data['role'].lower()
+    if role not in ['admin', 'client', 'lawyer']:
+        return jsonify({"error": "Invalid role. Must be 'admin', 'client', or 'lawyer'."}), 400
     if User.query.filter_by(email=data['email']).first():
         return jsonify(error="Email already registered"), 409
+    if User.query.filter_by(username=data['username']).first():
+        return jsonify({"error": "Username already taken"}), 409
 
     hashed_password = generate_password_hash(data['password'])
     user = User(
         username=data['username'],
         email=data['email'],
         password_hash=hashed_password,
-        role=data['role']
+        role=role 
     )
 
     try:
@@ -47,7 +60,7 @@ def register():
         else:
             print("Email not sent.")
 
-        return jsonify(message="User registered successfully "), 201
+        return jsonify({"success":"User registered successfully "}), 201
 
     except Exception as e:
         db.session.rollback()
@@ -85,7 +98,7 @@ def fetch_current_user():
     user = User.query.get(current_user_id)
 
     if not user:
-        return jsonify({"error": "User not found"}), 404
+        return jsonify({error: "User not found"}), 404
 
     user_data = {
         "id": user.id,

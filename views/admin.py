@@ -10,7 +10,7 @@ admin_bp = Blueprint('admin', __name__)
 #  Check if user is Admin
 def admin_required():
     identity = get_jwt_identity()
-    if not identity or identity.get('role') != 'Admin':
+    if not identity or identity.get('role') != 'admin':
         return False
     return True
 
@@ -59,7 +59,7 @@ def create_case():
         mail.send(msg)
     except Exception as e:
         print(f"Email error: {e}")
-        return jsonify(message="Case created, but email failed"), 201
+        return jsonify(success="Case created"), 201
 
     return jsonify(new_case.to_dict()), 201
 
@@ -77,7 +77,7 @@ def get_case(case_id):
 @jwt_required()
 def delete_user(user_id):
     identity = get_jwt_identity()
-    if not identity or identity.get('role') != 'Admin':
+    if not identity or identity.get('role', '').lower() != 'admin':
         return jsonify(error="Unauthorized"), 403
     # if id given by admin does not exist
     if not User.query.get(user_id):
@@ -87,4 +87,4 @@ def delete_user(user_id):
     db.session.commit()
 
     
-    return jsonify(message="User deleted successfully"), 200
+    return jsonify(success="User deleted successfully"), 200
