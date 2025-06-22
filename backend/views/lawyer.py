@@ -14,7 +14,7 @@ def get_lawyer_cases():
     cases = Case.query.filter_by(lawyer_id=user['id']).all()
     return jsonify([case.to_dict() for case in cases])
 
-@lawyer_bp.route('/lawyer/case/<int:id>', methods=['PUT'])
+@lawyer_bp.route('/lawyer/case/<int:id>', methods=['PATCH'])
 @jwt_required()
 def update_case(id):
     user = get_jwt_identity()

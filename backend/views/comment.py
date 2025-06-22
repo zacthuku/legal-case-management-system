@@ -17,6 +17,19 @@ def post_comment(case_id):
 
 @comment_bp.route('/cases/<int:case_id>/comments', methods=['GET'])
 @jwt_required()
-def get_comments(case_id):
-    comments = Comment.query.filter_by(case_id=case_id).all()
-    return jsonify([c.to_dict() for c in comments])
+def get_case_comments(case_id):
+    current_user = get_jwt_identity()
+    user = User.query.get(current_user['id'])
+
+    if user.role == 'admin' or user.role == 'lawyer':
+        comments = Comment.query.filter_by(case_id=case_id).all()
+    elif user.role == 'client':
+        # Only fetch if this case belongs to them
+        case = Case.query.get(case_id)
+        if case.client_id != user.id:
+            return jsonify({"error": "Access denied"}), 403
+        comments = Comment.query.filter_by(case_id=case_id, user_id=user.id).all()
+    else:
+        return jsonify({"error": "Invalid role"}), 400
+
+    return jsonify([c.to_dict() for c in comments]), 200

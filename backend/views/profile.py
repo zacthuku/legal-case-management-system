@@ -16,7 +16,7 @@ def get_profile():
     return jsonify(error="Profile not found"), 404
 
 # Update current user's profile
-@profile_bp.route('/profile', methods=['PUT'])
+@profile_bp.route('/profile', methods=['PATCH'])
 @jwt_required()
 def update_profile():
     identity = get_jwt_identity()
