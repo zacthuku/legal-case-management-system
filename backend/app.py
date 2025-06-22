@@ -4,9 +4,11 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_mail import Mail
 from datetime import timedelta
+from flask_cors import CORS
 import os
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})   
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -64,3 +66,4 @@ def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
 
 if __name__ == "__main__":
     app.run(debug=True)
+    

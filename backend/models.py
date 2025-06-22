@@ -27,7 +27,6 @@ class User(db.Model):
             "username": self.username,
             "email": self.email,
             "role": self.role,
-            "created_at": self.created_at.isoformat()
             }
 
 class UserProfile(db.Model):
@@ -77,11 +76,10 @@ class Case(db.Model):
             "title": self.title,
             "description": self.description,
             "status": self.status,
-            "lawyer_id": self.lawyer_id,
-            "client_id": self.client_id,
-            "created_at": self.created_at.isoformat(),
             "lawyer": self.lawyer.to_dict() if self.lawyer else None,
-            "client": self.client.to_dict() if self.client else None
+            "client": self.client.to_dict() if self.client else None,
+            "documents": [doc.to_dict() for doc in self.documents],
+            "comments": [comment.to_dict() for comment in self.comments]
         }
 
 class Document(db.Model):
@@ -124,9 +122,6 @@ class Comment(db.Model):
         return {
             "id": self.id,
             "content": self.content,
-            "case_id": self.case_id,
-            "user_id": self.user_id,
-            "created_at": self.created_at.isoformat(),
             "user": self.user.to_dict() if self.user else None
         }
 
