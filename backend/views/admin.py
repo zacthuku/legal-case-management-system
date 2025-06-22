@@ -23,7 +23,25 @@ def get_all_users():
     users = User.query.all()
     return jsonify([u.to_dict() for u in users]), 200
 
-
+@admin_bp.route('/clients', methods=['GET'])
+@jwt_required()
+def get_clients():
+    clients = User.query.filter_by(role='client').all()
+    return jsonify([u.to_dict() for u in clients]), 200
+# admin and lawyer can view all cases
+@admin_bp.route('/cases', methods=['GET'])
+@jwt_required()
+def get_cases():
+    identity = get_jwt_identity()
+    if not identity or identity.get('role', '').lower() not in ['admin', 'lawyer']:
+        return jsonify(error="Unauthorized"), 403
+    cases = Case.query.all()
+    return jsonify([c.to_dict() for c in cases]), 200
+@admin_bp.route('/lawyers', methods=['GET'])
+@jwt_required()
+def get_lawyers():
+    lawyers = User.query.filter_by(role='lawyer').all()
+    return jsonify([u.to_dict() for u in lawyers]), 200
 @admin_bp.route('/admin/cases', methods=['POST'])
 @jwt_required()
 def create_case():
@@ -35,13 +53,26 @@ def create_case():
     for field in required_fields:
         if field not in data:
             return jsonify(error=f"Missing field: {field}"), 400
+    client = User.query.get(data['client_id'])
+    lawyer = User.query.get(data['lawyer_id'])
+
+    if not client:
+        return jsonify(error=f"Client with ID {data['client_id']} not found."), 404
+    if client.role != "client":
+        return jsonify(error=f"User ID {client.id} is not a client."), 400
+
+    if not lawyer:
+        return jsonify(error=f"Lawyer with ID {data['lawyer_id']} not found."), 404
+    if lawyer.role != "lawyer":
+        return jsonify(error=f"User ID {lawyer.id} is not a lawyer."), 400
+
 
     new_case = Case(
         title=data['title'],
         description=data['description'],
         lawyer_id=data['lawyer_id'],
         client_id=data['client_id'],
-        status=data.get('status', 'Open')
+        status=data.get('status', 'Open').capitalize()
     )
 
     db.session.add(new_case)
@@ -63,7 +94,13 @@ def create_case():
 
     return jsonify(new_case.to_dict()), 201
 
-
+@admin_bp.route('/admin/cases', methods=['GET'])
+@jwt_required()
+def get_all_cases():
+    if not admin_required():
+        return jsonify(error="Unauthorized"), 403
+    cases = Case.query.all()
+    return jsonify([c.to_dict() for c in cases]), 200
 @admin_bp.route('/admin/cases/<int:case_id>', methods=['GET'])
 @jwt_required()
 def get_case(case_id):
