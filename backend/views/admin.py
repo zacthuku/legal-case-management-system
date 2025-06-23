@@ -105,10 +105,23 @@ def get_all_cases():
 @admin_bp.route('/cases/<int:case_id>', methods=['GET'])
 @jwt_required()
 def get_case(case_id):
-    if not admin_required() and get_jwt_identity().get('role', '').lower() != 'lawyer':
-        return jsonify(error="Unauthorized"), 403
+    user = get_jwt_identity()
+    role = user.get("role", "").lower()
+    user_id = user.get("id")
+
     case = Case.query.get_or_404(case_id)
-    return jsonify(case.to_dict()), 200
+
+    if role == 'admin':
+        return jsonify(case.to_dict()), 200
+
+    if role == 'lawyer' and case.lawyer_id == user_id:
+        return jsonify(case.to_dict()), 200
+
+    if role == 'client' and case.client_id == user_id:
+        return jsonify(case.to_dict()), 200
+
+    return jsonify(error="Unauthorized: You do not have access to this case."), 403
+
 
 #update case status
 @admin_bp.route('/cases/<int:case_id>/status', methods=['PATCH'])

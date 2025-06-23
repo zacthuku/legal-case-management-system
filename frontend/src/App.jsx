@@ -8,7 +8,7 @@ import Register from "./pages/Register";
 import Users from "./pages/Users";
 import CreateCase from "./pages/CreateCase";
 import Profile from "./pages/Profile";
-  
+import MyCases from "./pages/MyCases";
 import { UserProvider } from './context/UserContext';
 
 function App() {
@@ -23,9 +23,8 @@ function App() {
         <Route path="/users" element={<Layout><Users /></Layout>} />
         <Route path="/cases/new" element={<Layout><CreateCase /></Layout>} />
         <Route path="/profile" element={<Layout><Profile /></Layout>} />
-        
-        {/* Add more routes as needed */}
-        {/* Example: <Route path="/users" element={<Users />} /> */}
+        <Route path="/my-cases" element={<Layout><MyCases /></Layout>} />
+       
       </Routes>
 
     </UserProvider>

@@ -12,9 +12,15 @@ def get_profile():
     identity = get_jwt_identity()
     user = User.query.get(identity['id'])
 
-    if user and user.profile:
-        return jsonify(user.profile.to_dict())
-    return jsonify(error="Profile not found"), 404
+    if not user:
+        return jsonify(error="User not found"), 404
+
+    if not user.profile:
+        user.profile = UserProfile(user_id=user.id)
+        db.session.add(user.profile)
+        db.session.commit()
+
+    return jsonify(profile=user.profile.to_dict())
 
 
 # Update current user's profile
