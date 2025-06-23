@@ -159,7 +159,42 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  
+  // ========== Upload Document ==========
+  const upload_document = async (caseId, file) => {
+  if (!caseId || !file) return toast.error("Case ID and document are required.");
+
+  const formData = new FormData();
+  formData.append("documents", file);
+
+  try {
+    toast.loading("Uploading document...");
+
+    const res = await fetch(`http://127.0.0.1:5000/cases/${caseId}/documents`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`
+        
+      },
+      body: formData
+    });
+
+    const data = await res.json();
+    toast.dismiss();
+
+    if (res.ok && !data.error) {
+      toast.success("Document uploaded successfully.");
+      return data;
+    } else {
+      toast.error(data.error || "Document upload failed.");
+    }
+  } catch (err) {
+    toast.dismiss();
+    console.error("Document upload error:", err);
+    toast.error("Error uploading document.");
+  }
+};
+
+
   
   const context_data = {
     token,
@@ -172,7 +207,7 @@ export const UserProvider = ({ children }) => {
     fetch_user_cases,
     isFirstTimeUser,
     setCurrentUser,
-    
+    upload_document
   };
 
   return (

@@ -154,7 +154,7 @@ const CreateCase = () => {
           >
             <option value="open">Open</option>
             <option value="closed">Closed</option>
-            <option value="pending">Pending</option>
+            
           </select>
         </div>
 

@@ -76,6 +76,8 @@ class Case(db.Model):
             "title": self.title,
             "description": self.description,
             "status": self.status,
+            "lawyer_id": self.lawyer_id,
+            "client_id": self.client_id,
             "lawyer": self.lawyer.to_dict() if self.lawyer else None,
             "client": self.client.to_dict() if self.client else None,
             "documents": [doc.to_dict() for doc in self.documents],
@@ -122,6 +124,7 @@ class Comment(db.Model):
         return {
             "id": self.id,
             "content": self.content,
+            "role": self.user.role if self.user else None,
             "user": self.user.to_dict() if self.user else None
         }
 

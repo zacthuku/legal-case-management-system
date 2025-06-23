@@ -1,7 +1,7 @@
 # comment_views.py
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import Comment, db
+from models import Comment, db, User, Case
 
 comment_bp = Blueprint('comments', __name__)
 
@@ -28,7 +28,7 @@ def get_case_comments(case_id):
         case = Case.query.get(case_id)
         if case.client_id != user.id:
             return jsonify({"error": "Access denied"}), 403
-        comments = Comment.query.filter_by(case_id=case_id, user_id=user.id).all()
+        comments = Comment.query.filter_by(case_id=case_id).all()
     else:
         return jsonify({"error": "Invalid role"}), 400
 

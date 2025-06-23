@@ -101,14 +101,29 @@ def get_all_cases():
         return jsonify(error="Unauthorized"), 403
     cases = Case.query.all()
     return jsonify([c.to_dict() for c in cases]), 200
-@admin_bp.route('/admin/cases/<int:case_id>', methods=['GET'])
+#allow admin and lawyer to view a specific case
+@admin_bp.route('/cases/<int:case_id>', methods=['GET'])
 @jwt_required()
 def get_case(case_id):
-    if not admin_required():
+    if not admin_required() and get_jwt_identity().get('role', '').lower() != 'lawyer':
         return jsonify(error="Unauthorized"), 403
     case = Case.query.get_or_404(case_id)
     return jsonify(case.to_dict()), 200
 
+#update case status
+@admin_bp.route('/cases/<int:case_id>/status', methods=['PATCH'])
+@jwt_required()
+def update_case_status(case_id):
+    identity = get_jwt_identity()
+    if not identity or identity.get('role', '').lower() != 'admin':
+        return jsonify(error="Unauthorized"), 403
+    case = Case.query.get_or_404(case_id)
+    data = request.get_json()
+    if 'status' not in data:
+        return jsonify(error="Missing status field"), 400
+    case.status = data['status'].capitalize()
+    db.session.commit()
+    return jsonify(case.to_dict()), 200
 
 @admin_bp.route('/admin/users/<int:user_id>', methods=['DELETE'])
 @jwt_required()

@@ -91,24 +91,23 @@ def login():
 @auth_bp.route("/current_user", methods=["GET"])
 @jwt_required()
 def fetch_current_user():
-    identity= get_jwt_identity()
-
+    identity = get_jwt_identity()
     current_user_id = identity.get('id')
-    
+
     user = User.query.get(current_user_id)
 
     if not user:
-        return jsonify({error: "User not found"}), 404
+        return jsonify({"error": "User not found"}), 404
 
     user_data = {
         "id": user.id,
         "username": user.username,
         "email": user.email,
-        "role": user.role,
+        "role": user.role,  
         "created_at": user.created_at
     }
-    return jsonify(user_data), 200
 
+    return jsonify(user_data), 200
 
 
 # Logout
