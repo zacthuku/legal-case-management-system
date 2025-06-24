@@ -10,9 +10,9 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // using login_user function from UserContext
+    
     login_user(email, password);
-    console.log('Logging in with:', email, password);
+    
   };
 
   return (

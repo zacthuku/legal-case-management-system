@@ -10,7 +10,7 @@ from email_validator import validate_email, EmailNotValidError
 import re
 auth_bp = Blueprint('auth', __name__)
 
-# Assume `mail` is initialized in app.py and accessible via current_app
+
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -24,30 +24,38 @@ def register():
         validate_email(data['email'])
     except EmailNotValidError as e:
         return jsonify({"error": str(e)}), 400
+
     password = data['password']
     if len(password) < 8 or not re.search(r'[A-Za-z]', password) or not re.search(r'\d', password):
         return jsonify({"error": "Password must be at least 8 characters long and contain both letters and numbers."}), 400
+
     role = data['role'].lower()
-    if role not in ['admin', 'client', 'lawyer']:
-        return jsonify({"error": "Invalid role. Must be 'admin', 'client', or 'lawyer'."}), 400
+    
+    
+    if role == 'admin':
+        return jsonify({"error": "You cannot register as an admin."}), 403
+
+    if role not in ['client', 'lawyer']:
+        return jsonify({"error": "Invalid role. Must be 'client' or 'lawyer'."}), 400
+
     if User.query.filter_by(email=data['email']).first():
         return jsonify(error="Email already registered"), 409
     if User.query.filter_by(username=data['username']).first():
         return jsonify({"error": "Username already taken"}), 409
 
-    hashed_password = generate_password_hash(data['password'])
+    hashed_password = generate_password_hash(password)
     user = User(
         username=data['username'],
         email=data['email'],
         password_hash=hashed_password,
-        role=role 
+        role=role
     )
 
     try:
         db.session.add(user)
         db.session.commit()
 
-        # Send welcome email
+        # Optional: Send welcome email
         msg = Message(
             subject="Welcome to Our Service",
             recipients=[user.email],
@@ -57,10 +65,8 @@ def register():
         mail = current_app.extensions.get('mail')
         if mail:
             mail.send(msg)
-        else:
-            print("Email not sent.")
 
-        return jsonify({"success":"User registered successfully "}), 201
+        return jsonify({"success": "User registered successfully"}), 201
 
     except Exception as e:
         db.session.rollback()

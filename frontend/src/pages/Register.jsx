@@ -14,10 +14,15 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (role === 'admin') {
+      toast.error("Admin registration is not allowed.");
+      return;
+    }
+
     if (password !== repeatPassword) {
       toast.error("Passwords do not match!");
       return;
-    } else if (password.length < 4) {
+    } else if (password.length < 8) {
       toast.error("Password must be at least 8 characters long and contain both letters and numbers!");
       return;
     } else {
@@ -75,8 +80,7 @@ const Register = () => {
                   >
                     <option value="client">Client</option>
                     <option value="lawyer">Lawyer</option>
-                    <option value="admin">Admin</option>
-                    
+                    {/* Admin option intentionally removed */}
                   </select>
                   <button
                     type="submit"
@@ -97,18 +101,16 @@ const Register = () => {
         </div>
 
         <div className="flex-1 bg-sky-100 text-center hidden lg:flex">
-  <div className="m-12 xl:m-16 w-full flex items-center justify-center">
-    <img
-      src="/Law firm-cuate.svg"
-      alt="Legal case illustration"
-      className="object-contain w-full h-full max-h-[500px]"
-    />
-  </div>
-</div>
-
+          <div className="m-12 xl:m-16 w-full flex items-center justify-center">
+            <img
+              src="/Law firm-cuate.svg"
+              alt="Legal case illustration"
+              className="object-contain w-full h-full max-h-[500px]"
+            />
+          </div>
         </div>
       </div>
-    
+    </div>
   );
 };
 

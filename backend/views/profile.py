@@ -80,5 +80,19 @@ def change_password():
 
     user.password_hash = generate_password_hash(new_password)
     db.session.commit()
+    # send email notification
+    try:
+        from flask_mail import Message
+        from app import mail
+
+        msg = Message(
+            subject="Password Changed Successfully",
+            recipients=[user.email],
+            body="Your password has been changed successfully."
+        )
+        mail.send(msg)
+    except Exception as e:
+        print(f"Error sending email: {e}")
+        return jsonify(error="Password changed, but failed to send email notification"), 200
 
     return jsonify(message="Password changed successfully"), 200
