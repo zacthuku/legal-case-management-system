@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { ScaleIcon } from "@heroicons/react/24/solid";
 import { UserContext } from "../context/UserContext";
+import { Link } from "react-router-dom"; // Import Link for routing
 
 function Home() {
   const { currentUser, isFirstTimeUser } = useContext(UserContext);
@@ -27,18 +28,18 @@ function Home() {
         {/* Show Sign In/Up if not logged in */}
         {!currentUser && (
           <div className="flex justify-center md:justify-start gap-4">
-            <a
-              href="/register"
+            <Link
+              to="/register"
               className="bg-blue-600 text-white px-6 py-2 rounded-lg text-base font-medium hover:bg-blue-700 transition"
             >
               Sign Up
-            </a>
-            <a
-              href="/login"
+            </Link>
+            <Link
+              to="/login"
               className="border border-gray-700 px-6 py-2 rounded-lg text-base font-medium hover:bg-gray-100 transition"
             >
               Sign In
-            </a>
+            </Link>
           </div>
         )}
       </div>
