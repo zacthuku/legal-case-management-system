@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../context/UserContext';
 import { toast } from 'react-toastify';
-
+import { api_url } from '../config.json';
 const CreateCase = () => {
   const { token, currentUser } = useContext(UserContext);
   const [formData, setFormData] = useState({
@@ -17,7 +17,7 @@ const CreateCase = () => {
   useEffect(() => {
     const fetchUsers = async (endpoint, setter) => {
       try {
-        const res = await fetch(`http://127.0.0.1:5000/${endpoint}`, {
+        const res = await fetch(`${api_url}/${endpoint}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error(`Failed to fetch ${endpoint}`);
@@ -45,7 +45,7 @@ const CreateCase = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://127.0.0.1:5000/admin/cases', {
+      const res = await fetch('${api_url}/admin/cases', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

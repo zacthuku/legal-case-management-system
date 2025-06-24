@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import { toast } from 'react-toastify';
+import { api_url } from '../config.json';
 
 const Users = () => {
   const { token, currentUser } = useContext(UserContext);
@@ -10,7 +11,7 @@ const Users = () => {
     if (!token) return;
 
     try {
-      const res = await fetch("http://127.0.0.1:5000/admin/users", {
+      const res = await fetch(`${api_url}/admin/users`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -31,7 +32,7 @@ const Users = () => {
 
   const handleDelete = async (userId) => {
     try {
-      const res = await fetch(`http://127.0.0.1:5000/admin/users/${userId}`, {
+      const res = await fetch(`${api_url}/admin/users/${userId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import CaseDetails from './CaseDetails';
-
+import { api_url } from '../config.json';  
 const Cases = () => {
   const [cases, setCases] = useState([]);
   const [selectedCaseId, setSelectedCaseId] = useState(null);
   const token = localStorage.getItem('token');
 
   const fetchCases = () => {
-    fetch('http://127.0.0.1:5000/cases', {
+    fetch(`${api_url}/cases`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

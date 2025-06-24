@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { UserContext } from '../context/UserContext';
 import { toast } from 'react-toastify';
+import {api_url} from '../config.json';
 
 const CaseDetails = ({ selectedCaseId, onBack }) => {
   const [caseData, setCaseData] = useState(null);
@@ -21,7 +22,7 @@ const CaseDetails = ({ selectedCaseId, onBack }) => {
     const headers = { Authorization: `Bearer ${token}` };
 
     // Fetch case data
-    fetch(`http://127.0.0.1:5000/cases/${selectedCaseId}`, { headers })
+    fetch(`${api_url}/cases/${selectedCaseId}`, { headers })
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch case details');
         return res.json();
@@ -33,7 +34,7 @@ const CaseDetails = ({ selectedCaseId, onBack }) => {
       .catch(err => console.error('Case fetch error:', err));
 
     // Fetch comments
-    fetch(`http://127.0.0.1:5000/cases/${selectedCaseId}/comments`, { headers })
+    fetch(`${api_url}/cases/${selectedCaseId}/comments`, { headers })
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch comments');
         return res.json();
@@ -42,7 +43,7 @@ const CaseDetails = ({ selectedCaseId, onBack }) => {
       .catch(err => console.error('Comments fetch error:', err));
 
     // Fetch documents
-    fetch(`http://127.0.0.1:5000/cases/${selectedCaseId}/documents`, { headers })
+    fetch(`${api_url}/cases/${selectedCaseId}/documents`, { headers })
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch documents');
         return res.json();
@@ -56,7 +57,7 @@ const CaseDetails = ({ selectedCaseId, onBack }) => {
     e.preventDefault();
     if (!newComment.trim()) return;
 
-    fetch(`http://127.0.0.1:5000/cases/${selectedCaseId}/comments`, {
+    fetch(`${api_url}/cases/${selectedCaseId}/comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +81,7 @@ const CaseDetails = ({ selectedCaseId, onBack }) => {
 
   // Admin status update
   const handleStatusUpdate = () => {
-    fetch(`http://127.0.0.1:5000/cases/${selectedCaseId}/status`, {
+    fetch(`${api_url}/cases/${selectedCaseId}/status`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -127,7 +128,7 @@ const CaseDetails = ({ selectedCaseId, onBack }) => {
     selectedFiles.forEach((file) => formData.append('documents', file));
 
     try {
-      const res = await fetch(`http://127.0.0.1:5000/cases/${selectedCaseId}/documents`, {
+      const res = await fetch(`${api_url}/cases/${selectedCaseId}/documents`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -148,7 +149,7 @@ const CaseDetails = ({ selectedCaseId, onBack }) => {
   };
 const handleDeleteDocument = async (docId) => {
   try {
-    const res = await fetch(`http://127.0.0.1:5000/documents/${docId}`, {
+    const res = await fetch(`${api_url}/documents/${docId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,

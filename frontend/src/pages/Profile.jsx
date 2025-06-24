@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 import { toast } from 'react-toastify';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
+import { api_url } from '../config.json';
 
 const Profile = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -53,7 +54,7 @@ const Profile = () => {
     });
 
     try {
-      const res = await fetch('http://127.0.0.1:5000/profile', {
+      const res = await fetch(`${api_url}/profile`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ const Profile = () => {
       return toast.error('Passwords do not match');
 
     try {
-      const res = await fetch('http://127.0.0.1:5000/change-password', {
+      const res = await fetch(`${api_url}/change-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

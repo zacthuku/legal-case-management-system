@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import CaseDetails from './CaseDetails';
 import { UserContext } from '../context/UserContext';
 import { toast } from 'react-toastify';
+import { api_url } from '../config.json';
 
 const MyCases = () => {
   const [cases, setCases] = useState([]);
@@ -23,7 +24,7 @@ const MyCases = () => {
     else if (currentUser.role === 'client') endpoint = 'client/cases';
     else return;
 
-    fetch(`http://127.0.0.1:5000/${endpoint}`, {
+    fetch(`${api_url}/${endpoint}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

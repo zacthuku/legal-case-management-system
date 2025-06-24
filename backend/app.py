@@ -10,7 +10,7 @@ import os
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})   
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://legal_case_management_system_db_user:zzjhKuprbgvyqOecQfo3BegVxOandd2i@dpg-d1d87nili9vc73a92ih0-a.oregon-postgres.render.com/legal_case_management_system_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)

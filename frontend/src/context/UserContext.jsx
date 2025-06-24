@@ -2,7 +2,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-
+import {api_url} from '../config.json';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -11,18 +11,18 @@ export const UserProvider = ({ children }) => {
   const [userCases, setUserCases] = useState([]);
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(false);
   const [token, setAuthToken] = useState(() => localStorage.getItem('token'));
-
+ 
   // Fetch current user + profile
   const fetch_and_set_current_user = async (authToken = token) => {
     try {
-      const res = await fetch('http://127.0.0.1:5000/current_user', {
+      const res = await fetch(`${api_url}/current_user`, {
         headers: { Authorization: `Bearer ${authToken}` }
       });
 
       const user = await res.json();
       if (!user.id) return;
 
-      const profileRes = await fetch('http://127.0.0.1:5000/profile', {
+      const profileRes = await fetch(`${api_url}/profile`, {
         headers: { Authorization: `Bearer ${authToken}` }
       });
       const profileData = await profileRes.json();
@@ -47,7 +47,7 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  // Re-hydrate on page refresh
+  
   useEffect(() => {
     if (token && !currentUser) {
       fetch_and_set_current_user();
@@ -60,7 +60,7 @@ export const UserProvider = ({ children }) => {
 
     toast.loading('Registering...');
     try {
-      const res = await fetch('http://127.0.0.1:5000/register', {
+      const res = await fetch(`${api_url}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password, role })
@@ -84,7 +84,7 @@ export const UserProvider = ({ children }) => {
   const login_user = async (email, password) => {
     toast.loading('Logging in...');
     try {
-      const res = await fetch('http://127.0.0.1:5000/login', {
+      const res = await fetch(`${api_url}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -108,7 +108,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const logout_user = () => {
-    fetch('http://127.0.0.1:5000/logout', {
+    fetch(`${api_url}/logout`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
     })
@@ -134,7 +134,7 @@ export const UserProvider = ({ children }) => {
     else return;
 
     try {
-      const res = await fetch(`http://127.0.0.1:5000/${endpoint}`, {
+      const res = await fetch(`${api_url}/${endpoint}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -150,7 +150,7 @@ export const UserProvider = ({ children }) => {
 
     try {
       toast.loading('Uploading document...');
-      const res = await fetch(`http://127.0.0.1:5000/cases/${caseId}/documents`, {
+      const res = await fetch(`${api_url}/cases/${caseId}/documents`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: formData
@@ -179,7 +179,7 @@ export const UserProvider = ({ children }) => {
     logout_user,
     fetch_user_cases,
     upload_document,
-    fetch_and_set_current_user, // ✅ optionally expose this
+    fetch_and_set_current_user, 
   };
 
   return (

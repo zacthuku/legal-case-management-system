@@ -7,7 +7,7 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
-  const [role, setRole] = useState('client'); // default role
+  const [role, setRole] = useState('client'); 
 
   const { register_user } = useContext(UserContext);
 
