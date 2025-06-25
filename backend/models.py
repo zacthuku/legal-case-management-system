@@ -124,6 +124,8 @@ class Comment(db.Model):
         return {
             "id": self.id,
             "content": self.content,
+            "user_id": self.user_id,
+            "case_id": self.case_id,
             "role": self.user.role if self.user else None,
             "user": self.user.to_dict() if self.user else None
         }
