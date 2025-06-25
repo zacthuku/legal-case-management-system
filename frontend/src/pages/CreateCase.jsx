@@ -45,7 +45,7 @@ const CreateCase = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('${api_url}/admin/cases', {
+      const res = await fetch(`${api_url}/admin/cases`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
