@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -80,7 +81,7 @@ const Register = () => {
                   >
                     <option value="client">Client</option>
                     <option value="lawyer">Lawyer</option>
-                    {/* Admin option intentionally removed */}
+                    
                   </select>
                   <button
                     type="submit"
@@ -91,11 +92,11 @@ const Register = () => {
                 </div>
               </form>
               <p className="mt-6 text-xs text-gray-600 text-center">
-                Already have an account?{' '}
-                <a href="/login" className="border-b border-gray-500 border-dotted">
-                  Login here
-                </a>
-              </p>
+  Already have an account?{' '}
+  <Link to="/login" className="border-b border-gray-500 border-dotted text-sky-500 hover:text-sky-700">
+    Login here
+  </Link>
+</p>
             </div>
           </div>
         </div>

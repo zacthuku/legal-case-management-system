@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../context/UserContext';
-
+import { Link } from 'react-router-dom';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -49,11 +49,11 @@ const Login = () => {
                 </div>
               </form>
               <p className="mt-6 text-xs text-gray-600 text-center">
-                Don't have an account?{' '}
-                <a href="/register" className="border-b border-gray-500 border-dotted">
-                  Register here
-                </a>
-              </p>
+                 Don't have an account?{' '}
+                    <Link to="/register" className="border-b border-gray-500 border-dotted text-sky-500 hover:text-sky-700">
+                   Register here
+                    </Link>
+                 </p>
             </div>
           </div>
         </div>
