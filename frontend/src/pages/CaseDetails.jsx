@@ -54,30 +54,55 @@ const CaseDetails = ({ selectedCaseId, onBack }) => {
 
   // Add new comment
   const handleAddComment = (e) => {
-    e.preventDefault();
-    if (!newComment.trim()) return;
+  e.preventDefault();
+  if (!newComment.trim()) return;
 
-    fetch(`${api_url}/cases/${selectedCaseId}/comments`, {
-      method: 'POST',
+  fetch(`${api_url}/cases/${selectedCaseId}/comments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ content: newComment }),
+  })
+    .then(res => {
+      if (!res.ok) throw new Error('Failed to post comment');
+      return res.json();
+    })
+    .then(data => {
+      setComments(prev => [...prev, data]);
+      setNewComment('');
+    })
+    .catch(err => {
+      console.error('Post comment error:', err);
+      toast.error('Error posting comment');
+    });
+};
+
+  
+  const handleDeleteComment = async (commentId) => {
+  try {
+    const res = await fetch(`${api_url}/comments/${commentId}`, {
+      method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ content: newComment }),
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to post comment');
-        return res.json();
-      })
-      .then(data => {
-        setComments(prev => [...prev, data]);
-        setNewComment('');
-      })
-      .catch(err => {
-        console.error('Post comment error:', err);
-        toast.error('Error posting comment');
-      });
-  };
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setComments(prev => prev.filter(comment => comment.id !== commentId));
+      toast.success(data.success || 'Comment deleted');
+    } else {
+      toast.error(data.error || 'Failed to delete comment');
+    }
+  } catch (err) {
+    console.error('Delete comment error:', err);
+    toast.error('Error deleting comment');
+  }
+};
+
 
   // Admin status update
   const handleStatusUpdate = () => {
@@ -103,50 +128,69 @@ const CaseDetails = ({ selectedCaseId, onBack }) => {
       });
   };
 
-  // File selection handler
-  const handleUpload = (e) => {
-    const files = Array.from(e.target.files);
-    setSelectedFiles(files);
-    toast.info('Files selected. Click "Save Files" to upload.');
-  };
+  // Handle file selection, skip duplicates
+const handleUpload = (e) => {
+  const newFiles = Array.from(e.target.files);
 
-  // Remove file from preview
-  const handleRemoveFile = (index) => {
-    const updated = selectedFiles.filter((_, i) => i !== index);
-    setSelectedFiles(updated);
-    toast.warning('File removed from queue.');
-  };
+  // Filter out files already in selectedFiles
+  const uniqueNewFiles = newFiles.filter(
+    (file) =>
+      !selectedFiles.some(
+        (f) => f.name === file.name && f.size === file.size
+      )
+  );
 
-  // Confirm upload
-  const handleSaveFiles = async () => {
-    if (selectedFiles.length === 0) {
-      toast.error('No files selected.');
-      return;
-    }
+  if (uniqueNewFiles.length < newFiles.length) {
+    toast.warning("Some files were already selected and have been skipped.");
+  }
 
-    const formData = new FormData();
-    selectedFiles.forEach((file) => formData.append('documents', file));
+  // Update state with unique files
+  setSelectedFiles((prev) => [...prev, ...uniqueNewFiles]);
 
-    try {
-      const res = await fetch(`${api_url}/cases/${selectedCaseId}/documents`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+  if (uniqueNewFiles.length > 0) {
+    toast.info('New files added. Click "Save Files" to upload.');
+  }
+};
 
-      if (!res.ok) throw new Error('Upload failed');
+// Remove file from preview queue
+const handleRemoveFile = (index) => {
+  const updated = selectedFiles.filter((_, i) => i !== index);
+  setSelectedFiles(updated);
+  toast.warning('File removed from queue.');
+};
 
-      const uploaded = await res.json();
-      setDocuments((prev) => [...prev, uploaded]);
-      setSelectedFiles([]);
-      toast.success('Documents uploaded successfully!');
-    } catch (err) {
-      console.error('Upload error:', err);
-      toast.error('Error uploading documents.');
-    }
-  };
+// Confirm and upload selected files
+const handleSaveFiles = async () => {
+  if (selectedFiles.length === 0) {
+    toast.error('No files selected.');
+    return;
+  }
+
+  const formData = new FormData();
+  selectedFiles.forEach((file) => formData.append('documents', file));
+
+  try {
+    const res = await fetch(`${api_url}/cases/${selectedCaseId}/documents`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!res.ok) throw new Error('Upload failed');
+
+    const uploaded = await res.json();
+    setDocuments((prev) => [...prev, uploaded]);
+    setSelectedFiles([]);
+    toast.success('Documents uploaded successfully!');
+  } catch (err) {
+    console.error('Upload error:', err);
+    toast.error('Error uploading documents.');
+  }
+};
+
+// Delete uploaded document
 const handleDeleteDocument = async (docId) => {
   try {
     const res = await fetch(`${api_url}/documents/${docId}`, {
@@ -169,6 +213,7 @@ const handleDeleteDocument = async (docId) => {
     toast.error("Error deleting document.");
   }
 };
+
 
   if (!caseData) return <div className="p-8">Loading case details...</div>;
 
@@ -280,34 +325,46 @@ const handleDeleteDocument = async (docId) => {
 
       {/* Comments */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">Comments</h3>
-        {comments.length === 0 && (
-          <p className="text-gray-500 mb-4">No comments yet.</p>
-        )}
-        <ul className="space-y-2 mb-4">
-          {comments.map((c) => (
-            <li key={c.id} className="bg-gray-100 p-3 rounded relative">
-              <p className="text-sm text-gray-800 mb-6">{c.content}</p>
-              <span className="absolute bottom-1 right-2 text-xs text-blue-500 italic">
-                — {c.role}
-              </span>
-            </li>
-          ))}
-        </ul>
+  <h3 className="text-lg font-semibold mb-2">Comments</h3>
 
-        <form onSubmit={handleAddComment} className="flex gap-2">
-          <input
-            type="text"
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Add comment..."
-            className="flex-1 px-3 py-2 border rounded"
-          />
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-            Add
+  {comments.length === 0 && (
+    <p className="text-gray-500 mb-4">No comments yet.</p>
+  )}
+
+  <ul className="space-y-2 mb-4">
+    {comments.map((c) => (
+      <li key={c.id} className="bg-gray-100 p-3 rounded relative">
+        <p className="text-sm text-gray-800 mb-6">{c.content}</p>
+        <span className="absolute bottom-1 right-2 text-xs text-blue-500 italic">
+          — {c.role}
+        </span>
+
+        {c.user_id === currentUser?.id && (
+          <button
+            onClick={() => handleDeleteComment(c.id)}
+            className="absolute top-2 right-2 text-red-500 text-xs"
+          >
+            Delete
           </button>
-        </form>
-      </div>
+        )}
+      </li>
+    ))}
+  </ul>
+
+  <form onSubmit={handleAddComment} className="flex gap-2">
+    <input
+      type="text"
+      value={newComment}
+      onChange={(e) => setNewComment(e.target.value)}
+      placeholder="Add comment..."
+      className="flex-1 px-3 py-2 border rounded"
+    />
+    <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+      Add
+    </button>
+  </form>
+</div>
+
 
       {/* Admin-only status update */}
       {currentUser?.role === 'admin' && (

@@ -15,7 +15,7 @@ const Navbar = () => {
   const closeMenu = () => setMobileMenuOpen(false);
 
   return (
-    <nav className="sticky top-0 z-50 bg-white shadow-md">
+    <nav className="sticky top-0 z-50  shadow-md bg-white"> 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>

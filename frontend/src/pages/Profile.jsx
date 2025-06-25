@@ -110,15 +110,17 @@ const Profile = () => {
       <div className="max-w-xl mx-auto p-6 space-y-6 bg-white rounded shadow-md">
         {/* Avatar */}
         <div className="flex justify-center">
-          {formData.profile_picture_url ? (
-            <img src={formData.profile_picture_url} alt="Profile" className="w-28 h-28 rounded-full" />
-          ) : (
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
-              alt="Default Avatar"
-              className="w-28 h-28 rounded-full grayscale"
-            />
-          )}
+          <img
+  src={formData.profile_picture_url || 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png'}
+  alt="Profile"
+  className="w-28 h-28 rounded-full"
+  onError={(e) => {
+    e.target.onerror = null; // prevent infinite loop
+    e.target.src = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png';
+    e.target.classList.add('grayscale');
+  }}
+/>
+
         </div>
 
         {/* Profile Info */}
