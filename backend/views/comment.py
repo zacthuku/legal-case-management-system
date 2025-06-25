@@ -33,3 +33,14 @@ def get_case_comments(case_id):
         return jsonify({"error": "Invalid role"}), 400
 
     return jsonify([c.to_dict() for c in comments]), 200
+@app.route('/comments/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_comment(id):
+    comment = Comment.query.get(id)
+    if not comment:
+        return jsonify({"error": "Comment not found"}), 404
+
+    db.session.delete(comment)
+    db.session.commit()
+    return jsonify({"message": "Deleted"}), 200
+
