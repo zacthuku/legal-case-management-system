@@ -214,6 +214,14 @@ const handleDeleteDocument = async (docId) => {
   }
 };
 
+const handleDownload = (url, filename) => {
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
   if (!caseData) return <div className="p-8">Loading case details...</div>;
 
@@ -247,28 +255,42 @@ const handleDeleteDocument = async (docId) => {
   <h3 className="text-lg font-semibold mb-2">Uploaded Documents</h3>
   
   {documents.length > 0 ? (
-    <ul className="list-disc ml-4">
-      {documents.map((doc) => (
-        <li key={doc.id} className="flex items-center justify-between">
-          <a
-            href={doc.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 underline"
-          >
-            {doc.filename}
-          </a>
-          {currentUser?.id === doc.uploaded_by && (
-            <button
-              onClick={() => handleDeleteDocument(doc.id)}
-              className="ml-4 text-red-500 text-sm hover:underline"
-            >
-              Delete
-            </button>
-          )}
-        </li>
-      ))}
-    </ul>
+    <ul className="list-disc ml-4 space-y-2">
+  {documents.map((doc) => (
+    <li key={doc.id} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+        {/* Open Link */}
+        <a
+          href={doc.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline text-sm"
+        >
+          {doc.filename}
+        </a>
+
+        {/* Download Button */}
+        <button
+          onClick={() => handleDownload(doc.url, doc.filename)}
+          className="text-sm text-gray-700 hover:text-blue-700 underline"
+        >
+          Download
+        </button>
+      </div>
+
+      {/* Delete (if uploaded by current user) */}
+      {currentUser?.id === doc.uploaded_by && (
+        <button
+          onClick={() => handleDeleteDocument(doc.id)}
+          className="text-red-500 text-sm hover:underline"
+        >
+          Delete
+        </button>
+      )}
+    </li>
+  ))}
+</ul>
+
   ) : (
     <p className="text-gray-500">No documents uploaded.</p>
   )}
