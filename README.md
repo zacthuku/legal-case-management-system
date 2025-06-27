@@ -110,7 +110,8 @@ It includes:
 ## Deployment
 
 * **Frontend on Vercel**: [Live Frontend App](https://legal-case-management-system.vercel.app/)
-* **Backend on Render**: [Live API](https://legal-case-management-system.onrender.com)
+* **Backend on Render**: [Live API](https://legal-case-management-system.onrender.com
+* **Project presentation**: [video presentation](https://drive.google.com/file/d/1H4yie1nYUuMT9_BzDvtR7tw4UifQe9k6/view?usp=sharing)
 
 ---
 
